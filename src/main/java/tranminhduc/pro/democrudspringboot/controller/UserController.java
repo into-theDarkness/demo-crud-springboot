@@ -42,6 +42,17 @@ public class UserController {
         headers.setLocation(ucBuilder.path("/users/{id}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
+    @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<User> deleteUser(@PathVariable("id") long id ){
+        System.out.println("Fetching & delete User with id" +id);
+        Optional<User> user = userService.findById(id);
+        if(user== null){
+            System.out.println("Unable to delete User with id" +id + "not found");
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+        userService.remove(id);
+        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+    }
 }
 
   
